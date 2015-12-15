@@ -16,7 +16,7 @@ class SheetSelectionReaderTest extends \PHPUnit_Framework_TestCase
         $xml = file_get_contents(__DIR__.'/../../data/xml/'.$xmlFixtureFile);
 
         $zip = $this->getMock(\ZipArchive::class);
-        $zip->expects($this->once())
+        $zip->expects($this->atLeastOnce())
             ->method('getFromName')
             ->with('xl/workbook.xml')
             ->will($this->returnValue($xml))

@@ -2,6 +2,9 @@
 
 namespace Nanaweb\ExcelSelectionSetter\Util\Reader;
 
+use Nanaweb\ExcelUtil\Book as BookUtil;
+use Nanaweb\ExcelUtil\XmlNamespace;
+
 /**
  * Class SheetSelectionReader
  * ファイル内で選択されているシートを読み取る
@@ -10,6 +13,16 @@ namespace Nanaweb\ExcelSelectionSetter\Util\Reader;
  */
 class SheetSelectionReader implements ReaderInterface
 {
+    /**
+     * @var BookUtil
+     */
+    private $bookUtil;
+
+    public function __construct(BookUtil $bookUtil = null)
+    {
+        $this->bookUtil = $bookUtil ? $bookUtil : new BookUtil();
+    }
+
     /**
      * 選択されているシート名を返す
      * @inheritdoc
@@ -21,17 +34,12 @@ class SheetSelectionReader implements ReaderInterface
             throw new \RuntimeException('Could not find workbook.xml');
         }
 
+        $sheets = $this->bookUtil->makeSheetMap($xlsx);
+
         $dom = new \DOMDocument();
         $dom->loadXML($worksheetXml);
         $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('s', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
-
-        // シートID => シート名の配列を作る
-        $sheets = [];
-        foreach ($xpath->query('//s:workbook/s:sheets/s:sheet') as $sheet) {
-            /** @var \DOMElement $sheet */
-            $sheets[$sheet->getAttribute('sheetId')] = $sheet->getAttribute('name');
-        }
+        $xpath->registerNamespace('s', XmlNamespace::SPREADSHEETML_NS_URL);
 
         // 選択されているシートIDを調べる
         $activeSheetId = null;

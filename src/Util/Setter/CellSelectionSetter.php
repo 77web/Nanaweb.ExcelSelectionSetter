@@ -54,9 +54,11 @@ class CellSelectionSetter implements SetterInterface
             /** @var \DOMElement $selection */
             $selection = $selections->item(0);
             $selection->setAttribute('activeCell', $targetCell);
+            $selection->setAttribute('sqref', $targetCell);
         } else {
             $selection = $dom->createElement('sheetView');
             $selection->setAttribute('activeCell', $targetCell);
+            $selection->setAttribute('sqref', $targetCell);
 
             $sheetView = $xpath->query('//s:worksheet/s:sheetViews/s:sheetView')->item(0);
             $sheetView->appendChild($selection);

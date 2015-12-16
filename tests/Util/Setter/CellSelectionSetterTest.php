@@ -30,6 +30,12 @@ class CellSelectionSetterTest extends \PHPUnit_Framework_TestCase
             ->with($zip)
             ->will($this->returnValue($dummySheetMap))
         ;
+        $zip->expects($this->once())
+            ->method('addFromString')
+            ->with('xl/worksheet/sheet1.xml', $this->callback(function($xml){
+                return strpos($xml, 'activeCell="A1"') !== false && strpos($xml, 'sqref="A1"');
+            }))
+        ;
 
         $setter = new CellSelectionSetter($bookUtil);
         $setter->set($zip, 'テスト', 'A1');

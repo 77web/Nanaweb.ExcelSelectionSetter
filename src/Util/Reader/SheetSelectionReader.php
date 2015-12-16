@@ -4,6 +4,7 @@ namespace Nanaweb\ExcelSelectionSetter\Util\Reader;
 
 use Nanaweb\ExcelUtil\Book as BookUtil;
 use Nanaweb\ExcelUtil\XmlNamespace;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 /**
  * Class SheetSelectionReader
@@ -27,7 +28,7 @@ class SheetSelectionReader implements ReaderInterface
      * 選択されているシート名を返す
      * @inheritdoc
      */
-    public function read(\ZipArchive $xlsx)
+    public function read(ZipArchive $xlsx)
     {
         $worksheetXml = $xlsx->getFromName('xl/workbook.xml');
         if (!$worksheetXml) {

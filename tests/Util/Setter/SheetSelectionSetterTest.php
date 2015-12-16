@@ -3,6 +3,7 @@
 
 namespace Nanaweb\ExcelSelectionSetter\Util\Setter;
 
+use Nanaweb\ExcelUtil\ZipArchive;
 
 class SheetSelectionSetterTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +15,7 @@ class SheetSelectionSetterTest extends \PHPUnit_Framework_TestCase
     {
         $xml = file_get_contents(__DIR__.'/../../data/xml/'.$xmlFixtureFile);
 
-        $zip = $this->getMock(\ZipArchive::class);
+        $zip = $this->getMockBuilder(ZipArchive::class)->disableOriginalConstructor()->getMock();
         $zip->expects($this->atLeastOnce())
             ->method('getFromName')
             ->with('xl/workbook.xml')

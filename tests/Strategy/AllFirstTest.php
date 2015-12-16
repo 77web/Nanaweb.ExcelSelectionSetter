@@ -5,12 +5,13 @@ namespace Nanaweb\ExcelSelectionSetter\Strategy;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\CellSelectionSetter;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\SheetSelectionSetter;
 use Nanaweb\ExcelUtil\Book as BookUtil;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 class AllFirstTest extends \PHPUnit_Framework_TestCase
 {
     public function test()
     {
-        $target = $this->getMock(\ZipArchive::class);
+        $target = $this->getMockBuilder(ZipArchive::class)->disableOriginalConstructor()->getMock();
 
         $sheetSetter = $this->getMock(SheetSelectionSetter::class);
         $cellSetter = $this->getMock(CellSelectionSetter::class);

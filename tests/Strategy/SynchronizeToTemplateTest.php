@@ -8,13 +8,14 @@ use Nanaweb\ExcelSelectionSetter\Util\Reader\SheetSelectionReader;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\CellSelectionSetter;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\SheetSelectionSetter;
 use Nanaweb\ExcelUtil\Book as BookUtil;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 class SynchronizeToTemplateTest extends \PHPUnit_Framework_TestCase
 {
     public function test()
     {
-        $target = $this->getMock(\ZipArchive::class);
-        $template = $this->getMock(\ZipArchive::class);
+        $target = $this->getMockBuilder(ZipArchive::class)->disableOriginalConstructor()->getMock();
+        $template = $this->getMockBuilder(ZipArchive::class)->disableOriginalConstructor()->getMock();
 
         $sheetReader = $this->getMock(SheetSelectionReader::class);
         $cellReader = $this->getMock(CellSelectionReader::class);

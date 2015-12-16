@@ -5,6 +5,7 @@ namespace Nanaweb\ExcelSelectionSetter\Util\Setter;
 
 use Nanaweb\ExcelUtil\Book as BookUtil;
 use Nanaweb\ExcelUtil\XmlNamespace;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 /**
  * Class SheetSelectionSetter
@@ -24,7 +25,7 @@ class SheetSelectionSetter implements SetterInterface
         $this->bookUtil = $bookUtil ? $bookUtil : new BookUtil();
     }
 
-    public function set(\ZipArchive $xlsx, $targetSheetName = null)
+    public function set(ZipArchive $xlsx, $targetSheetName = null)
     {
         $worksheetXml = $xlsx->getFromName('xl/workbook.xml');
         if (!$worksheetXml) {

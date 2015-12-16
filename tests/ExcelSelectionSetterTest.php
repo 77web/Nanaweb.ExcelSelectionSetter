@@ -3,6 +3,7 @@
 namespace Nanaweb\ExcelSelectionSetter;
 
 use Nanaweb\ExcelSelectionSetter\Strategy\StrategyInterface;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 class ExcelSelectionSetterTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +17,7 @@ class ExcelSelectionSetterTest extends \PHPUnit_Framework_TestCase
 
         $strategy1->expects($this->once())
             ->method('setSelection')
-            ->with($this->isInstanceOf(\ZipArchive::class), $arg)
+            ->with($this->isInstanceOf(ZipArchive::class), $arg)
         ;
         $strategy2->expects($this->never())
             ->method('setSelection')

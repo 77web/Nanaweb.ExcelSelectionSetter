@@ -5,6 +5,7 @@ namespace Nanaweb\ExcelSelectionSetter\Util\Reader;
 
 use Nanaweb\ExcelUtil\Book as BookUtil;
 use Nanaweb\ExcelUtil\XmlNamespace;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 class CellSelectionReader implements ReaderInterface
 {
@@ -18,7 +19,7 @@ class CellSelectionReader implements ReaderInterface
         $this->bookUtil = $bookUtil ? $bookUtil : new BookUtil();
     }
 
-    public function read(\ZipArchive $xlsx, $targetSheetName = null)
+    public function read(ZipArchive $xlsx, $targetSheetName = null)
     {
         // $targetSheetNameのシートxmlファイルを取得
         $sheetFileMap = $this->bookUtil->makeSheetFileMap($xlsx);

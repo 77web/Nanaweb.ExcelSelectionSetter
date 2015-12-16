@@ -6,6 +6,7 @@ namespace Nanaweb\ExcelSelectionSetter\Strategy;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\CellSelectionSetter;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\SheetSelectionSetter;
 use Nanaweb\ExcelUtil\Book as BookUtil;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 /**
  * Class AllFirst
@@ -43,7 +44,7 @@ class AllFirst implements StrategyInterface
         $this->bookUtil = $bookUtil ? $bookUtil : new BookUtil();
     }
 
-    public function setSelection(\ZipArchive $xlsx)
+    public function setSelection(ZipArchive $xlsx)
     {
         $sheets = $this->bookUtil->makeSheetMap($xlsx);
         foreach ($sheets as $sheetName) {

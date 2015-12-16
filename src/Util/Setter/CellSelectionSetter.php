@@ -5,6 +5,7 @@ namespace Nanaweb\ExcelSelectionSetter\Util\Setter;
 
 use Nanaweb\ExcelUtil\Book as BookUtil;
 use Nanaweb\ExcelUtil\XmlNamespace;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 /**
  * Class CellSelectionSetter
@@ -25,11 +26,11 @@ class CellSelectionSetter implements SetterInterface
     }
 
     /**
-     * @param \ZipArchive $xlsx
+     * @param ZipArchive $xlsx
      * @param string $targetSheetName
      * @param string $targetCell
      */
-    public function set(\ZipArchive $xlsx, $targetSheetName = null, $targetCell = null)
+    public function set(ZipArchive $xlsx, $targetSheetName = null, $targetCell = null)
     {
         // $targetSheetNameのシートxmlファイルを取得
         $sheetFileMap = $this->bookUtil->makeSheetFileMap($xlsx);

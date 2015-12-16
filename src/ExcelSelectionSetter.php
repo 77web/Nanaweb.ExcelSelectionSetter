@@ -3,6 +3,7 @@
 namespace Nanaweb\ExcelSelectionSetter;
 
 use Nanaweb\ExcelSelectionSetter\Strategy\StrategyInterface;
+use Nanaweb\ExcelUtil\ZipArchive;
 
 class ExcelSelectionSetter
 {
@@ -34,8 +35,7 @@ class ExcelSelectionSetter
      */
     public function execute($xlsxPath, $strategyName, $args = null)
     {
-        $xlsx = new \ZipArchive();
-        $xlsx->open($xlsxPath);
+        $xlsx = new ZipArchive($xlsxPath);
 
         if (!isset($this->strategies[$strategyName])) {
             throw new \RuntimeException(sprintf('Strategy "%s" not found', $strategyName));

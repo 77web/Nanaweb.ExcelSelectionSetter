@@ -3,6 +3,7 @@
 namespace Nanaweb\ExcelSelectionSetter\Strategy;
 
 use Nanaweb\ExcelUtil\Book as BookUtil;
+use Nanaweb\ExcelUtil\ZipArchive;
 use Nanaweb\ExcelSelectionSetter\Util\Reader\CellSelectionReader;
 use Nanaweb\ExcelSelectionSetter\Util\Reader\SheetSelectionReader;
 use Nanaweb\ExcelSelectionSetter\Util\Setter\CellSelectionSetter;
@@ -51,12 +52,12 @@ class SynchronizeToTemplate implements StrategyInterface
     }
 
     /**
-     * @param \ZipArchive $xlsx
-     * @param \ZipArchive|null $template
+     * @param ZipArchive $xlsx
+     * @param ZipArchive|null $template
      */
-    public function setSelection(\ZipArchive $xlsx, \ZipArchive $template = null)
+    public function setSelection(ZipArchive $xlsx, ZipArchive $template = null)
     {
-        if (!($template instanceOf \ZipArchive)) {
+        if (!($template instanceOf ZipArchive)) {
             throw new \RuntimeException('Invalid template');
         }
 

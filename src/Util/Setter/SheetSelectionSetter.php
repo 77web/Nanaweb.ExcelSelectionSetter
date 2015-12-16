@@ -27,8 +27,17 @@ class SheetSelectionSetter implements SetterInterface
 
     public function set(ZipArchive $xlsx, $targetSheetName = null)
     {
-        $worksheetXml = $xlsx->getFromName('xl/workbook.xml');
-        if (!$worksheetXml) {
+        // workbook.xmlに書き込む
+        $this->setInWorkbook($xlsx, $targetSheetName);
+
+        // 対象のシートのxmlに書き込む
+        $this->setInWorksheet($xlsx, $targetSheetName);
+    }
+
+    private function setInWorkbook(ZipArchive $xlsx, $targetSheetName)
+    {
+        $workbookXml = $xlsx->getFromName('xl/workbook.xml');
+        if (!$workbookXml) {
             throw new \RuntimeException('Could not find workbook.xml');
         }
 
@@ -48,7 +57,7 @@ class SheetSelectionSetter implements SetterInterface
         }
 
         $dom = new \DOMDocument;
-        $dom->loadXML($worksheetXml);
+        $dom->loadXML($workbookXml);
         $xpath = new \DOMXPath($dom);
         $xpath->registerNamespace('s', XmlNamespace::SPREADSHEETML_NS_URL);
 
@@ -68,4 +77,24 @@ class SheetSelectionSetter implements SetterInterface
         $xlsx->addFromString('xl/workbook.xml', $dom->saveXML());
     }
 
+    private function setInWorksheet(ZipArchive $xlsx, $targetSheetName)
+    {
+        $sheetFileMap = $this->bookUtil->makeSheetFileMap($xlsx);
+
+        foreach ($sheetFileMap as $sheetName => $sheetFile) {
+            $worksheetXml = $xlsx->getFromName($sheetFile);
+            $tabSelected = $sheetName == $targetSheetName ? 1 : 0;
+
+            $dom = new \DOMDocument;
+            $dom->loadXML($worksheetXml);
+            $xpath = new \DOMXPath($dom);
+            $xpath->registerNamespace('s', XmlNamespace::SPREADSHEETML_NS_URL);
+
+            /** @var \DOMElement $sheetView */
+            $sheetView = $xpath->query('//s:worksheet/s:sheetViews/s:sheetView')->item(0);
+            $sheetView->setAttribute('tabSelected', $tabSelected);
+
+            $xlsx->addFromString($sheetFile, $dom->saveXML());
+        }
+    }
 }

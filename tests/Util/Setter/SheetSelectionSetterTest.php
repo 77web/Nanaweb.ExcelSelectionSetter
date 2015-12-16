@@ -23,7 +23,7 @@ class SheetSelectionSetterTest extends \PHPUnit_Framework_TestCase
         $zip->expects($this->once())
             ->method('addFromString')
             ->with('xl/workbook.xml', $this->callback(function($xml){
-                return strpos($xml, 'activeTab="2"') !== false;
+                return strpos($xml, 'activeTab="1"') !== false;
             }))
         ;
 

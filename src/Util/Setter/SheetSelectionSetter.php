@@ -31,10 +31,18 @@ class SheetSelectionSetter implements SetterInterface
             throw new \RuntimeException('Could not find workbook.xml');
         }
 
-        // 対象のシートIDを探す
+        // 対象のシートindexを探す
         $sheets = $this->bookUtil->makeSheetMap($xlsx);
-        $targetSheetId = array_search($targetSheetName, $sheets);
-        if ($targetSheetId === false) {
+        $i = 0;
+        $targetSheetIndex = false;
+        foreach ($sheets as $sheetName) {
+            if ($sheetName == $targetSheetName) {
+                $targetSheetIndex = $i;
+                break;
+            }
+            $i++;
+        }
+        if ($targetSheetIndex === false) {
             throw new \RuntimeException(sprintf('Could not find sheet"%s" in workbook', $targetSheetName));
         }
 
@@ -47,10 +55,10 @@ class SheetSelectionSetter implements SetterInterface
         if ($views->length == 1) {
             /** @var \DOMElement $workbookView */
             $workbookView = $views->item(0);
-            $workbookView->setAttribute('activeTab', $targetSheetId);
+            $workbookView->setAttribute('activeTab', $targetSheetIndex);
         } else {
             $workbookView = $dom->createElement('workbookView');
-            $workbookView->setAttribute('activeTab', $targetSheetId);
+            $workbookView->setAttribute('activeTab', $targetSheetIndex);
 
             $bookView = $xpath->query('//s:workbook/s:bookViews')->item(0);
             $bookView->appendChild($workbookView);

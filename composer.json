@@ -25,6 +25,6 @@
         "phpunit/phpunit": "^4.8"
     },
     "require": {
-        "nanaweb/excel-util": "~0.9"
+        "nanaweb/excel-util": "~0.9.1"
     }
 }

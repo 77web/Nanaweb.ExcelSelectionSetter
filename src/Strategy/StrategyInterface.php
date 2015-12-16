@@ -6,5 +6,5 @@ interface StrategyInterface
 {
     public function getName();
 
-    public function setSelection(\ZipArchive $xslx);
+    public function setSelection(\ZipArchive $xlsx);
 }

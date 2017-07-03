@@ -3,6 +3,7 @@
 
 namespace Nanaweb\ExcelSelectionSetter\Util\Reader;
 
+use Nanaweb\ExcelSelectionSetter\Exception\BrokenWorkbookException;
 use Nanaweb\ExcelUtil\Book as BookUtil;
 use Nanaweb\ExcelUtil\XmlNamespace;
 use Nanaweb\ExcelUtil\ZipArchive;
@@ -24,12 +25,12 @@ class CellSelectionReader implements ReaderInterface
         // $targetSheetNameのシートxmlファイルを取得
         $sheetFileMap = $this->bookUtil->makeSheetFileMap($xlsx);
         if (!isset($sheetFileMap[$targetSheetName])) {
-            throw new \RuntimeException(sprintf('Worksheet "%s" not found', $targetSheetName));
+            throw BrokenWorkbookException::createForMissingWorksheet($targetSheetName);
         }
 
         $worksheetXml = $xlsx->getFromName($sheetFileMap[$targetSheetName]);
         if (!$worksheetXml) {
-            throw new \RuntimeException(sprintf('Worksheet "%s" is empty or broken.', $targetSheetName));
+            throw BrokenWorkbookException::createForBrokenWorksheet($targetSheetName);
         }
 
         // 選択されているセルの番地を調べる

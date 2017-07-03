@@ -45,4 +45,50 @@ class CellSelectionReaderTest extends \PHPUnit_Framework_TestCase
             ['worksheet_without_activeCell.xml', 'A1'],
         ];
     }
+
+    /**
+     * @expectedException \Nanaweb\ExcelSelectionSetter\Exception\BrokenWorkbookException
+     */
+    public function test_シートのファイルが見つからない()
+    {
+        $zip = $this->getMockBuilder(ZipArchive::class)->disableOriginalConstructor()->getMock();
+        $bookUtil = $this->getMock(BookUtil::class);
+        $dummySheetMap = [
+            'テスト' => 'xl/worksheet/sheet1.xml',
+        ];
+        $bookUtil->expects($this->once())
+            ->method('makeSheetFileMap')
+            ->with($zip)
+            ->willReturn($dummySheetMap)
+        ;
+
+        $reader = new CellSelectionReader($bookUtil);
+        $reader->read($zip, 'non-existent-sheet');
+    }
+
+    /**
+     * @expectedException \Nanaweb\ExcelSelectionSetter\Exception\BrokenWorkbookException
+     */
+    public function test_シートのファイルが読み取れない()
+    {
+        $zip = $this->getMockBuilder(ZipArchive::class)->disableOriginalConstructor()->getMock();
+        $bookUtil = $this->getMock(BookUtil::class);
+
+        $dummySheetMap = [
+            'テスト' => 'xl/worksheet/sheet1.xml',
+        ];
+        $bookUtil->expects($this->once())
+            ->method('makeSheetFileMap')
+            ->with($zip)
+            ->willReturn($dummySheetMap)
+        ;
+
+        $zip->expects($this->atLeastOnce())
+            ->method('getFromName')
+            ->with('xl/worksheet/sheet1.xml')
+        ;
+
+        $reader = new CellSelectionReader($bookUtil);
+        $reader->read($zip, 'テスト');
+    }
 }

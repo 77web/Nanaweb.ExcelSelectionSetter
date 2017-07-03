@@ -38,7 +38,7 @@ class ExcelSelectionSetter
         $xlsx = new ZipArchive($xlsxPath);
 
         if (!isset($this->strategies[$strategyName])) {
-            throw new \RuntimeException(sprintf('Strategy "%s" not found', $strategyName));
+            throw new \LogicException(sprintf('Strategy "%s" not found', $strategyName));
         }
 
         $this->strategies[$strategyName]->setSelection($xlsx, $args);

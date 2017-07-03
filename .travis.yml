@@ -13,7 +13,7 @@ matrix:
 
 script:
  - composer install --prefer-source
- - phpunit --coverage-text --coverage-clover=coverage.clover
+ - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
  - wget https://scrutinizer-ci.com/ocular.phar
